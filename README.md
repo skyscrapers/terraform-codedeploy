@@ -62,7 +62,7 @@ Create an deployment group for a codedeploy app. This module will filter for tag
 ### Example
 ```
   module "deployment_group-ec2tag" {
-    source             = "github.com/skyscrapers/terraform-codedeploy//deployment-group"
+    source             = "github.com/skyscrapers/terraform-codedeploy//deployment-group-ec2tag"
     environment        = "production"
     app_name           = "${module.codedeploy.app_name}"
     service_role_arn   = "${module.iam.arn_role}"
