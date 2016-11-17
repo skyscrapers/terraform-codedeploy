@@ -46,7 +46,7 @@ Create an deployment group for a codedeploy app
 ```
 
 ## deployment-group-ec2tag
-Create an deployment group for a codedeploy app. This module will filter for tags and by default will filter for environment so you will need to add a tag to your instances called environment with the value matching the environment passed to this module
+Create an deployment group for a codedeploy app. This module will filter for tags 
 
 ### Available variables
  * [`environment`]: String(required): Environment where your codedeploy deployment group is used for

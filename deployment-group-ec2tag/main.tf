@@ -8,9 +8,4 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
     type  = "KEY_AND_VALUE"
     value = "${var.filtervalue}"
   }
-  ec2_tag_filter {
-    key   = "environment"
-    type  = "KEY_AND_VALUE"
-    value = "${var.environment}"
-  }
 }
