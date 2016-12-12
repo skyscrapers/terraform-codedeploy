@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "codedeploy_bucket" {
   bucket = "${var.name_prefix}-codedeploy-releases"
-  acl = "private"
+  acl    = "private"
 
   versioning {
     enabled = true
@@ -9,6 +9,7 @@ resource "aws_s3_bucket" "codedeploy_bucket" {
 
 resource "aws_iam_policy" "codedeploy_policy" {
   name = "codedeploy_s3bucket_access"
+
   policy = <<EOF
 {
   "Version": "2012-10-17",
