@@ -46,7 +46,7 @@ Create an deployment group for a codedeploy app
 ```
 
 ## deployment-group-ec2tag
-Create an deployment group for a codedeploy app. This module will filter for tags 
+Create an deployment group for a codedeploy app. This module will filter for tags
 
 ### Available variables
  * [`environment`]: String(required): Environment where your codedeploy deployment group is used for
@@ -69,4 +69,27 @@ Create an deployment group for a codedeploy app. This module will filter for tag
     filterkey          = "app"
     filtervalue        = "web"
   }
+```
+
+# S3 bucket
+
+Create an S3 bucket to use with Codedeploy, to store application revisions.
+
+See [s3bucket/variables.tf](s3bucket/variables.tf) for available variables.
+
+### Outputs
+
+* [`bucket_id`]: String: S3 bucket id
+* [`bucket_arn`]: String: S3 bucket ARN
+* [`policy_id`]: String: IAM policy id for the EC2 instances working with Codedeploy
+* [`policy_arn`]: String: IAM policy ARN for the EC2 instances working with Codedeploy
+* [`policy_name`]: String: IAM policy name for the EC2 instances working with Codedeploy
+
+### Example
+
+```
+module "codedeploy_bucket" {
+  source      = "github.com/skyscrapers/terraform-codedeploy//s3bucket?ref=478373f6f8d4a46b7a1ec96090707365e0ae3e42"
+  name_prefix = "halito"
+}
 ```
