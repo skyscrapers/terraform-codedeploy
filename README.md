@@ -8,9 +8,13 @@ Create a codedeploy app
 ### Available variables
  * [`name`]: String(required): Name of your codedeploy application
  * [`project`]: String(required): The current project
+ * [`s3_bucket_arn`]: String(optional): ARN of the S3 bucket where to fetch the application revision packages
 
 ### Output
 * [`app_name`]: String: Name of the codedeploy app
+* [`deployer_policy_id`]: String: IAM policy id for the user / role that will upload application revisions and trigger deployments
+* [`deployer_policy_arn`]: String: IAM policy ARN for the user / role that will upload application revisions and trigger deployments
+* [`deployer_policy_name`]: String: IAM policy name for the user / role that will upload application revisions and trigger deployments
 
 ### Example
 ```
@@ -46,7 +50,7 @@ Create an deployment group for a codedeploy app
 ```
 
 ## deployment-group-ec2tag
-Create an deployment group for a codedeploy app. This module will filter for tags 
+Create an deployment group for a codedeploy app. This module will filter for tags
 
 ### Available variables
  * [`environment`]: String(required): Environment where your codedeploy deployment group is used for
