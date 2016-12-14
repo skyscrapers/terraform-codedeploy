@@ -2,7 +2,7 @@ data "aws_region" "current" {
   current = true
 }
 
-data "aws_caller_identity" "current" { }
+data "aws_caller_identity" "current" {}
 
 resource "aws_codedeploy_app" "app" {
   name = "${var.project}-${var.name}"
@@ -13,7 +13,7 @@ resource "aws_codedeploy_app" "app" {
 # It's basically taken from the AWS documentation here
 # http://docs.aws.amazon.com/codedeploy/latest/userguide/auth-and-access-control-iam-identity-based-access-control.html
 resource "aws_iam_policy" "deployer_policy" {
-  name = "${var.project}-${var.name}-deployer-policy"
+  name        = "${var.project}-${var.name}-deployer-policy"
   description = "Policy to create a codedeploy application revision and to deploy it, for application ${aws_codedeploy_app.app.name}"
 
   policy = <<EOF
