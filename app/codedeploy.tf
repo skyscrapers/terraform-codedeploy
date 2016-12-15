@@ -56,7 +56,7 @@ resource "aws_iam_policy" "deployer_policy" {
         "arn:aws:codedeploy:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:application:${aws_codedeploy_app.app.name}"
       ]
     }
-    ${element(formatlist(", { \"Effect\" : \"Allow\", \"Action\" : [ \"s3:PutObject*\", \"s3:ListBucket\" ], \"Resource\" : [ \"%s/*\", \"%s\" ] }, { \"Effect\" : \"Allow\", \"Action\" : [ \"s3:ListAllMyBuckets\" ], \"Resource\" : [ \"*\" ] }", compact(list(var.s3_bucket_arn))), 0)}
+    ${element(formatlist(", { \"Effect\" : \"Allow\", \"Action\" : [ \"s3:PutObject*\", \"s3:ListBucket\" ], \"Resource\" : [ \"%s/*\", \"%s\" ] }, { \"Effect\" : \"Allow\", \"Action\" : [ \"s3:ListAllMyBuckets\" ], \"Resource\" : [ \"*\" ] }", compact(list(var.s3_bucket_arn)), compact(list(var.s3_bucket_arn))), 0)}
   ]
 }
 EOF
