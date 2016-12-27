@@ -21,6 +21,7 @@ resource "aws_iam_policy" "codedeploy_policy" {
         "s3:List*"
       ],
       "Resource": [
+        "${aws_s3_bucket.codedeploy_bucket.arn}",
         "${aws_s3_bucket.codedeploy_bucket.arn}/*",
         "arn:aws:s3:::aws-codedeploy-us-east-1/*",
         "arn:aws:s3:::aws-codedeploy-us-east-2/*",
