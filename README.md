@@ -75,6 +75,36 @@ Create an deployment group for a codedeploy app. This module will filter for tag
   }
 ```
 
+## deployment-group-ec2tag-notify
+Create an deployment group for a codedeploy app and will set the notifications. This module will filter for tags
+
+### Available variables
+ * [`environment`]: String(required): Environment where your codedeploy deployment group is used for
+ * [`app_name`]: String(required): Name of the coddeploy app
+ * [`service_role_arn`]: String(required): IAM role that is used by the deployment group. You can use the [terraform-iam](https://github.com/skyscrapers/terraform-iam/blob/master/README.md#codedeploy_role) module for this.
+ * [`filterkey`]: String(required):  The key of the tag you assigned to the instances belonging to this deployment group
+ * [`filtervalue`]: String(required): The value of the tag you assigned to the instances belonging to this deployment group
+ * [`trigger_arn`]: String(required): SNS topic through which notifications are sent.
+ * [`trigger_name`]: String(required): the name of the notification trigger.
+ * [`trigger_events`]: String(optional): events that can trigger the notifications.
+
+### Output
+/
+
+### Example
+```
+  module "deployment_group-ec2tag-notify" {
+    source             = "github.com/skyscrapers/terraform-codedeploy//deployment-group-ec2tag-triggered"
+    environment        = "production"
+    app_name           = "${module.codedeploy.app_name}"
+    service_role_arn   = "${module.iam.arn_role}"
+    filterkey          = "app"
+    filtervalue        = "web"
+    trigger_name     = "SNSToSlack"
+    trigger_arn      = "arn:aws:sns:eu-west-1:123456780:CodeDeploy"
+  }
+```
+
 # S3 bucket
 
 Create an S3 bucket to use with Codedeploy, to store application revisions.
