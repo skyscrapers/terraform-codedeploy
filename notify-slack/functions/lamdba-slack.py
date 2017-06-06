@@ -2,19 +2,23 @@ from __future__ import print_function
 import json,urllib2,urllib
 import os, boto3
 from base64 import b64decode
+import sys
+import traceback
 import logging
-
-LOGGER = logging.getLogger()
-LOGGER.setLevel(logging.INFO)
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 def decrypt(in_message):
     """
     Decrypts the message with kms
     """
     region = os.environ['AWS_DEFAULT_REGION']
+    try:
+        kms = boto3.client('kms', region_name=region)
+        return kms.decrypt(CiphertextBlob=b64decode(in_message))['Plaintext']
+    except:
+        logger.error(''.join(traceback.format_exception(sys.exc_info())))
 
-    kms = boto3.client('kms', region_name=region)
-    return kms.decrypt(CiphertextBlob=b64decode(in_message))['Plaintext']
 
 def send_slack(message):
     """
@@ -30,10 +34,8 @@ def send_slack(message):
     }
 
     data = urllib.urlencode({"payload":json.dumps(payload)})
-    print(data)
     req = urllib2.Request(slack_url, data)
     response = urllib2.urlopen(req)
-    print(response.read())
 
 def lambda_handler(event, context):
     message = json.loads(event['Records'][0]['Sns']['Message'])
