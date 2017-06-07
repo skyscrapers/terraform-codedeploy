@@ -127,3 +127,27 @@ module "codedeploy_bucket" {
   name_prefix = "halito"
 }
 ```
+
+## notify-slack
+Creates a lambda function that notifies Slack via the [incoming webhooks](https://skyscrapers.slack.com/apps/A0F7XDUAZ-incoming-webhooks) when a deployment event happens using an SNS topic to call the lambda function.
+
+### Available variables
+* [`lambda_bucket_name`]: String: Name of the bucket where the lambda function is stored (currently points to our bucket in the skyscrapers prod account)
+* [`lambda_bucket_version`]: String: Version of the lambda function to be used
+* [`slack_webhook_url`]: String: the encrypted url to send our notifications to
+* [`slack_channel`]: String: The channel where we want to publish the notification
+* [`kms_key_arn`]: String:  kms key used to encrypt the webhook
+
+### Output
+* [`sns_topic`]: String: The SNS topic to configure for the codedeploy deployment groups
+
+
+### Example
+```
+  module "slack-notification" {
+    source  = "github.com/skyscrapers/terraform-codedeploy//notify-slack"
+    slack_webhook_url = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    slack_channel = "#channel_name"
+    kms_key_arn = "${aws_kms_key.kms_key.arn}"
+  }
+```
