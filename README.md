@@ -105,7 +105,7 @@ Create an deployment group for a codedeploy app and will set the notifications. 
   }
 ```
 
-# S3 bucket
+## S3 bucket
 
 Create an S3 bucket to use with Codedeploy, to store application revisions.
 
