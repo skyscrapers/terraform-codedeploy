@@ -66,9 +66,9 @@ resource "aws_lambda_function" "cd_sns_lambda" {
 }
 
 resource "aws_lambda_permission" "cd_sns_lambda" {
-  statement_id   = "AllowExecutionFromCloudWatch"
+  statement_id   = "AllowExecutionFromSNS"
   action         = "lambda:InvokeFunction"
   function_name  = "${aws_lambda_function.cd_sns_lambda.function_name}"
-  principal      = "events.amazonaws.com"
-  source_arn     = "${aws_sns_topic_subscription.lambda-subscription.arn}"
+  principal      = "sns.amazonaws.com"
+  source_arn     = "${aws_sns_topic.cd-sns-lambda.arn}"
 }
