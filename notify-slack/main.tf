@@ -51,8 +51,15 @@ resource "aws_lambda_function" "cd_sns_lambda" {
   function_name     = "cd_sns_lambda"
   role              = "${aws_iam_role.iam_for_lambda.arn}"
   handler           = "lambda-slack.lambda_handler"
+  /*
+  This is still not working due to this https://github.com/hashicorp/terraform/issues/8204
+
   filename          = "${path.module}/functions/lambda-slack.zip"
   source_code_hash = "${base64sha256(file("${path.module}/functions/lambda-slack.zip"))}"
+  */
+  s3_bucket         = "${var.lambda_bucket_name}"
+  s3_key            = "lambda-slack.zip"
+  s3_object_version = "${var.lambda_bucket_version}"
   runtime           = "python2.7"
   timeout           = "120"
   kms_key_arn       = "${var.kms_key_arn}"
@@ -62,6 +69,7 @@ resource "aws_lambda_function" "cd_sns_lambda" {
       SLACK_CHANNEL = "${var.slack_channel}"
     }
   }
+
 }
 
 resource "aws_lambda_permission" "cd_sns_lambda" {
