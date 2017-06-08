@@ -18,7 +18,7 @@ variable "autoscaling_groups" {
 variable "trigger_events" {
   description = "events that can trigger the notifications"
   type = "list"
-  default = ["DeploymentStop" , "InstanceSuccess" ,"InstanceStart" ,"DeploymentRollback" ,"DeploymentSuccess" ,"InstanceFailure" ,"DeploymentFailure" ,"DeploymentStart"]
+  default = ["DeploymentStop" , "DeploymentRollback" ,"DeploymentSuccess" ,"DeploymentFailure" ,"DeploymentStart"]
 }
 
 variable "trigger_target_arn" {
