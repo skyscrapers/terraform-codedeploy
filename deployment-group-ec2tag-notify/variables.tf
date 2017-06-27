@@ -16,7 +16,7 @@ variable "rollback_enabled" {
 }
 
 variable "rollback_events" {
-  descritpion = "The event types that trigger a rollback"
+  description = "The event types that trigger a rollback"
   type        = "list"
   default     = ["DEPLOYMENT_FAILURE"]
 }
