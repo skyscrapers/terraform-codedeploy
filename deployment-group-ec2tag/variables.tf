@@ -10,6 +10,17 @@ variable "service_role_arn" {
   description = "IAM role that is used by the deployment group"
 }
 
+variable "rollback_enabled" {
+  description = "Whether to enable auto rollback"
+  default     = false
+}
+
+variable "rollback_events" {
+  descritpion = "The event types that trigger a rollback"
+  type        = "list"
+  default     = ["DEPLOYMENT_FAILURE"]
+}
+
 variable "filterkey" {
   description = "filter key you want to use for filtering"
 }

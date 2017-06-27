@@ -33,7 +33,8 @@ Create an deployment group for a codedeploy app
  * [`app_name`]: String(required): Name of the coddeploy app
  * [`service_role_arn`]: String(required): IAM role that is used by the deployment group. You can use the [terraform-iam](https://github.com/skyscrapers/terraform-iam/blob/master/README.md#codedeploy_role) module for this.
  * [`autoscaling_groups`]: List(required): Autoscaling groups you want to attach to the deployment group
-
+ * [`rollback_enbled`]: Bool(optional, default: `false`): Whether to enable auto rollback
+ * [`rollback_events`]: List(optional, default: `["DEPLOYMENT_FAILURE"]`): The event types that trigger a rollback
 
 ### Output
 /
@@ -56,6 +57,8 @@ Create an deployment group for a codedeploy app
  * [`app_name`]: String(required): Name of the coddeploy app
  * [`service_role_arn`]: String(required): IAM role that is used by the deployment group. You can use the [terraform-iam](https://github.com/skyscrapers/terraform-iam/blob/master/README.md#codedeploy_role) module for this.
  * [`autoscaling_groups`]: List(required): Autoscaling groups you want to attach to the deployment group
+ * [`rollback_enbled`]: Bool(optional, default: `false`): Whether to enable auto rollback
+ * [`rollback_events`]: List(optional, default: `["DEPLOYMENT_FAILURE"]`): The event types that trigger a rollback
  * [`trigger_target_arn`]: String(required): SNS topic through which notifications are sent.
 
 ### Output
@@ -80,6 +83,8 @@ Create an deployment group for a codedeploy app. This module will filter for tag
  * [`environment`]: String(required): Environment where your codedeploy deployment group is used for
  * [`app_name`]: String(required): Name of the coddeploy app
  * [`service_role_arn`]: String(required): IAM role that is used by the deployment group. You can use the [terraform-iam](https://github.com/skyscrapers/terraform-iam/blob/master/README.md#codedeploy_role) module for this.
+ * [`rollback_enbled`]: Bool(optional, default: `false`): Whether to enable auto rollback
+ * [`rollback_events`]: List(optional, default: `["DEPLOYMENT_FAILURE"]`): The event types that trigger a rollback
  * [`filterkey`]: String(required):  The key of the tag you assigned to the instances belonging to this deployment group
  * [`filtervalue`]: String(required): The value of the tag you assigned to the instances belonging to this deployment group
 
@@ -106,6 +111,8 @@ Create an deployment group for a codedeploy app and will set the notifications. 
  * [`environment`]: String(required): Environment where your codedeploy deployment group is used for
  * [`app_name`]: String(required): Name of the coddeploy app
  * [`service_role_arn`]: String(required): IAM role that is used by the deployment group. You can use the [terraform-iam](https://github.com/skyscrapers/terraform-iam/blob/master/README.md#codedeploy_role) module for this.
+ * [`rollback_enbled`]: Bool(optional, default: `false`): Whether to enable auto rollback
+ * [`rollback_events`]: List(optional, default: `["DEPLOYMENT_FAILURE"]`): The event types that trigger a rollback
  * [`filterkey`]: String(required):  The key of the tag you assigned to the instances belonging to this deployment group
  * [`filtervalue`]: String(required): The value of the tag you assigned to the instances belonging to this deployment group
  * [`trigger_arn`]: String(required): SNS topic through which notifications are sent.

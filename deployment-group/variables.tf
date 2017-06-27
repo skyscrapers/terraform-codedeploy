@@ -14,3 +14,14 @@ variable "autoscaling_groups" {
   type        = "list"
   description = "Autoscaling groups you want to attach to the deployment group"
 }
+
+variable "rollback_enabled" {
+  description = "Whether to enable auto rollback"
+  default     = false
+}
+
+variable "rollback_events" {
+  descritpion = "The event types that trigger a rollback"
+  type        = "list"
+  default     = ["DEPLOYMENT_FAILURE"]
+}
