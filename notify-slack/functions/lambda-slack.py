@@ -11,6 +11,7 @@ logger.setLevel(logging.INFO)
 def decrypt(in_message):
     """
     Decrypts the message with kms
+    AWS lamda SNS test is not valid json at 13-03-18
     """
     region = os.environ['AWS_DEFAULT_REGION']
     try:
