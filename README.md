@@ -174,7 +174,7 @@ Creates a lambda function that notifies Slack via the [incoming webhooks](https:
 ### Example
 ```
   module "slack-notification" {
-    source  = "github.com/skyscrapers/terraform-codedeploy/notify-slack/functions"
+    source  = "github.com/skyscrapers/terraform-codedeploy//notify-slack
     slack_webhook_url = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     slack_channel = "#channel_name"
     kms_key_arn = "${aws_kms_key.kms_key.arn}"
