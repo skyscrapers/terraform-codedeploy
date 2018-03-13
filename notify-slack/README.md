@@ -12,4 +12,4 @@ It has to be in a file and not simply as a string e.g. `--plaintext 'https://...
 To test that the lamda code is working, you can publish to the topic from the AWS CLI, setting the SNS ARN for the below command.
 Please note that currently the built in AWS Lamda test for SNS does not supply a correct JSON formatted message.
 
-`aws sns publish --topic-arn arn:...:cd-sns-lambda --message '{"applicationName": "test-slack-notify", "deploymentId": "d-12A3BCDEF", "deploymentGroupName": "dep-group-def-123", "status": "succeeded"}' --profile SkyscrapersTest`
+`aws sns publish --topic-arn arn:...:cd-sns-lambda --message '{"applicationName": "test-slack-notify", "deploymentId": "d-12A3BCDEF", "deploymentGroupName": "dep-group-def-123", "status": "succeeded"}'`
