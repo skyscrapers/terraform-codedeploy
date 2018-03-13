@@ -1,13 +1,11 @@
-variable "lambda_bucket_name" {
-  default = "skyscrapers-lambda-functions"
-}
-variable "lambda_bucket_version" {
-  default = "FhFXcFrK.z0SnrlJdHpTUIWGncqP6MPx"
-}
 variable "slack_webhook_url" {
+	description = "Needs to be encrypted from a file using: aws kms encrypt --key-id 'arn:' --plaintext 'fileb://webhook' --output text --query CiphertextBlob"
 }
+
 variable "slack_channel" {
+	description = "E.g. #channel_name"
 }
 
 variable "kms_key_arn" {
+	description = "KMS used for encrypting the webhook"
 }
