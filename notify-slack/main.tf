@@ -47,15 +47,28 @@ resource "aws_sns_topic_subscription" "lambda-subscription" {
     endpoint = "${aws_lambda_function.cd_sns_lambda.arn}"
 }
 
+data "archive_file" "slack_notification_zip" {
+  type = "zip"
+  output_path = "${path.module}/lambda-slack.zip"
+
+  source_dir = "${path.module}/functions/"
+}
+
+locals {
+  # Solution from this comment to open issue on non-relative paths
+	# https://github.com/hashicorp/terraform/issues/8204#issuecomment-332239294
+
+	filename = "${substr(data.archive_file.slack_notification_zip.output_path, length(path.cwd) + 1, -1)}"
+  // +1 for removing the "/"
+}
+
 resource "aws_lambda_function" "cd_sns_lambda" {
   function_name     = "cd_sns_lambda"
   role              = "${aws_iam_role.iam_for_lambda.arn}"
   handler           = "lambda-slack.lambda_handler"
 
-	# Needs to be a zip file for lamda, does not need to be in S3.  
-
-  filename          = "${path.module}/functions/lambda-slack.zip"
-  source_code_hash = "${base64sha256(file("${path.module}/functions/lambda-slack.zip"))}"
+  filename          = "${local.filename}"
+  source_code_hash  = "${base64sha256(file("${local.filename}"))}"
 
   runtime           = "python2.7"
   timeout           = "120"
@@ -76,3 +89,4 @@ resource "aws_lambda_permission" "cd_sns_lambda" {
   principal      = "sns.amazonaws.com"
   source_arn     = "${aws_sns_topic.cd-sns-lambda.arn}"
 }
+
