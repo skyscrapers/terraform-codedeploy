@@ -8,7 +8,7 @@ resource "aws_s3_bucket" "codedeploy_bucket" {
 }
 
 resource "aws_iam_policy" "codedeploy_policy" {
-  name = "codedeploy_s3bucket_access"
+  name = "${var.name_prefix}_codedeploy_s3bucket_access"
 
   policy = <<EOF
 {
