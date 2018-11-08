@@ -7,6 +7,10 @@ It has to be in a file and not simply as a string e.g. `--plaintext 'https://...
 
 `aws kms encrypt --key-id "alias/keyName" --plaintext 'fileb://webhook' --output text --query CiphertextBlob`
 
+## on CodeDeploy failures
+
+- [notify_users]: String (optional) It is possible to use mentions on failues. This is a simple string, e.g. "@name1 @name2" or if the customer requests it, it can simply be "@channel".
+
 ## Testing
 
 To test that the lamda code is working, you can publish to the topic from the AWS CLI, setting the SNS ARN for the below command.

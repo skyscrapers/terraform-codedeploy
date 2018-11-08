@@ -77,6 +77,7 @@ resource "aws_lambda_function" "cd_sns_lambda" {
     variables = {
       SLACK_WEBHOOK = "${var.slack_webhook_url}"
       SLACK_CHANNEL = "${var.slack_channel}"
+      NOTIFY_USERS = "${var.notify_users}"
     }
   }
 
@@ -89,4 +90,3 @@ resource "aws_lambda_permission" "cd_sns_lambda" {
   principal      = "sns.amazonaws.com"
   source_arn     = "${aws_sns_topic.cd-sns-lambda.arn}"
 }
-

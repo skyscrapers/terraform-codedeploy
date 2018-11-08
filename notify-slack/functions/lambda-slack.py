@@ -2,6 +2,7 @@ from __future__ import print_function
 import json,urllib2,urllib
 import os, boto3
 from base64 import b64decode
+import re
 import sys
 import traceback
 import logging
@@ -27,7 +28,12 @@ def send_slack(message):
     """
     slack_url = decrypt(os.environ['SLACK_WEBHOOK'])
     slack_channel = os.environ['SLACK_CHANNEL']
-    text = "%s deployment for app %s in group %s with id %s" % (message['status'], message['applicationName'], message['deploymentGroupName'], message['deploymentId'])
+    notify_users = os.environ['NOTIFY_USERS']
+    matchObj = re.match( r'fail', message['status'], re.I) # Check for a failed state
+    if matchObj :
+      text = "%s - %s deployment for app %s in group %s with id %s" % (notify_users, message['status'], message['applicationName'], message['deploymentGroupName'], message['deploymentId'])
+    else :
+      text = "%s deployment for app %s in group %s with id %s" % (message['status'], message['applicationName'], message['deploymentGroupName'], message['deploymentId'])
     payload = {
         "channel": slack_channel,
         "username": "codedeploy",
