@@ -29,11 +29,15 @@ def send_slack(message):
     slack_url = decrypt(os.environ['SLACK_WEBHOOK'])
     slack_channel = os.environ['SLACK_CHANNEL']
     notify_users = os.environ['NOTIFY_USERS']
+    text = "%s deployment for app %s in group %s with id %s" % (message['status'], message['applicationName'], message['deploymentGroupName'], message['deploymentId'])
     matchObj = re.match( r'fail', message['status'], re.I) # Check for a failed state
+    text_attention = '*FAILED*:' 
     if matchObj :
-      text = "%s - %s deployment for app %s in group %s with id %s" % (notify_users, message['status'], message['applicationName'], message['deploymentGroupName'], message['deploymentId'])
-    else :
-      text = "%s deployment for app %s in group %s with id %s" % (message['status'], message['applicationName'], message['deploymentGroupName'], message['deploymentId'])
+      if notify_users != "" :
+        text = notify_users + ' - ' + text_attention + ' ' + text
+      else :
+          text = text_attention + ' ' + text
+
     payload = {
         "channel": slack_channel,
         "username": "codedeploy",
