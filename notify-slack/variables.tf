@@ -17,7 +17,7 @@ variable "notify_users" {
 }
 
 variable "verbose" {
-	description = "All codedeploy messages will be output if true. Only START, FAILED, STOPPED and SUCCEEDED if false"
-	type = "boolean"
+	description = "All codedeploy messages will be output if true. Only START, FAILED, STOPPED and SUCCEEDED if it is empty"
+	type = "string"
 	default = "true"
 }
