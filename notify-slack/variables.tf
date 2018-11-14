@@ -15,3 +15,9 @@ variable "notify_users" {
 	type = "string"
 	default = ""
 }
+
+variable "verbose" {
+	description = "All codedeploy messages will be output if true. Only START, FAILED, STOPPED and SUCCEEDED if false"
+	type = "boolean"
+	default = "true"
+}

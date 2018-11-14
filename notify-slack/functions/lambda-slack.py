@@ -22,26 +22,39 @@ def decrypt(in_message):
         logger.error(''.join(traceback.format_exception(sys.exc_info())))
 
 
-def send_slack(message):
+def send_slack(message, subject):
     """
     Send Slack Message to Deployments Channel
     """
+    severity_level = "good"
+    icon_emoji = ":codedeploy:"
     slack_url = decrypt(os.environ['SLACK_WEBHOOK'])
     slack_channel = os.environ['SLACK_CHANNEL']
     notify_users = os.environ['NOTIFY_USERS']
-    text = "%s deployment for app %s in group %s with id %s" % (message['status'], message['applicationName'], message['deploymentGroupName'], message['deploymentId'])
-    matchObj = re.match( r'fail', message['status'], re.I) # Check for a failed state
-    text_attention = '*FAILED*:' 
+
+    text = "%s deployment for app %s in group %s with id %s" % (message['status'], message['applicationName'], 
+    message['deploymentGroupName'], message['deploymentId'])
+
+    matchObj = re.match( r'fail', message['status'], re.I) # Check for FAILED state
     if matchObj :
-      if notify_users != "" :
-        text = notify_users + ' - ' + text_attention + ' ' + text
+      severity_level = "danger"
+      if notify_users == "" :
+        text = '*FAILED* ' + text
       else :
-          text = text_attention + ' ' + text
+        text = notify_users + ' - '  + text
+
+    matchObj = re.match(r'stop', message['status'], re.I) # Check for STOPPED state
+    if matchObj :
+        severity_level = "warning"
+        text = '*STOPPED* ' + text
 
     payload = {
         "channel": slack_channel,
         "username": "codedeploy",
-        "text": text
+        "title": subject,
+        "colour": severity_level,
+        "fallback": text,
+        "icon_emoji": icon_emoji
     }
 
     data = urllib.urlencode({"payload":json.dumps(payload)})
@@ -50,5 +63,13 @@ def send_slack(message):
 
 def lambda_handler(event, context):
     message = json.loads(event['Records'][0]['Sns']['Message'])
-    send_slack(message)
-    return message
+    subject = json.loads(event['Records'][0]['Sns']['Subject'])
+    # Verbose outputs all messages, otherwise only 
+    if os.environ['VERBOSE'] :
+      send_slack(message, subject)
+    elif message['status'] == 'START' or message['status'] == 'STOPPED' or message['status'] == 'FAILED' or message['status'] == 'SUCCEEDED':
+        send_slack(message, subject)
+    else :
+        send_slack(message, subject)
+
+    return subject + ' ' + message

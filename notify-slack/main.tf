@@ -78,9 +78,9 @@ resource "aws_lambda_function" "cd_sns_lambda" {
       SLACK_WEBHOOK = "${var.slack_webhook_url}"
       SLACK_CHANNEL = "${var.slack_channel}"
       NOTIFY_USERS = "${var.notify_users}"
+      VERBOSE = "${var.verbose}"
     }
   }
-
 }
 
 resource "aws_lambda_permission" "cd_sns_lambda" {
