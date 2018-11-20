@@ -34,18 +34,21 @@ def send_slack(message):
     icon_emoji = ":codedeploy:"
     title = message['status']
     pretext = ""
-    text = "The deployment for app *%s* in group %s with id %s" % ( message['applicationName'], 
+    text = "The deployment for app *%s* in group %s\n with id `%s`" % ( message['applicationName'], 
     message['deploymentGroupName'], message['deploymentId'])
 
     matchObj = re.match( r'fail', message['status'], re.I) # Check for FAILED state
     if matchObj :
       severity_level = "danger"
+      text = text + ' failed.'
       if notify_users != "" :
-        pretext = notify_users
+        pretext = '*' + notify_users + '*'
+
 
     matchObj = re.match(r'stop', message['status'], re.I) # Check for STOPPED state
     if matchObj :
         severity_level = "warning"
+        text = text + ' stopped.'
 
     payload = {
       "channel": slack_channel,
@@ -54,7 +57,7 @@ def send_slack(message):
       "attachments":  [{
         "pretext": pretext,
         "title": title,
-        "markdwn_in" : ["text"],
+        "markdwn_in" : ["text", "pretext"],
         "color": severity_level,
         "text": text,
       }]
@@ -66,10 +69,11 @@ def send_slack(message):
 
 def lambda_handler(event, context):
     message = json.loads(event['Records'][0]['Sns']['Message'])
+    
     # Verbose outputs all messages, otherwise only those set for ['status']
     if os.environ['VERBOSE'] :
       send_slack(message)
-    elif message['status'] == 'START' or message['status'] == 'STOPPED' or message['status'] == 'FAILED' or message['status'] == 'SUCCEEDED':
+    elif message['status'] == 'CREATED' or message['status'] == 'STOPPED' or message['status'] == 'FAILED' or message['status'] == 'SUCCEEDED':
       send_slack(message)
     else :
       send_slack(message)

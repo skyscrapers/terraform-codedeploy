@@ -1,5 +1,5 @@
 variable "slack_webhook_url" {
-	description = "Needs to be encrypted from a file using: aws kms encrypt --key-id 'arn:' --plaintext 'fileb://webhook' --output text --query CiphertextBlob"
+	description = "Needs to be encrypted from a file with _no_ encryption context, using: aws kms encrypt --key-id 'arn:' --plaintext 'fileb://webhook' --output text --query CiphertextBlob"
 }
 
 variable "slack_channel" {
@@ -17,7 +17,7 @@ variable "notify_users" {
 }
 
 variable "verbose" {
-	description = "All codedeploy messages will be output if true. Only START, FAILED, STOPPED and SUCCEEDED if it is empty"
+	description = "All codedeploy messages will be output if true. Only CREATED, FAILED, STOPPED and SUCCEEDED if it is empty or false"
 	type = "string"
 	default = "true"
 }
