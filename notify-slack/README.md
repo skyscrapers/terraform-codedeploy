@@ -9,7 +9,7 @@ It has to be in a file and not simply as a string e.g. `--plaintext 'https://...
 
 ## on CodeDeploy failures
 
-- [notify_users]: String (optional) It is possible to use mentions on failues. This is a simple string, e.g. "<@name1> <@name2>" or if the customer requests it, it can simply be "<@channel>".
+- [notify_users]: String (optional) It is possible to use mentions on failues. This is a simple string, e.g. "<@name1> <@name2>" or if the customer requests it, it can simply be "<!channel>" or "<!here>".
 
 ## Testing
 
