@@ -35,8 +35,8 @@ def send_slack(message):
     icon_emoji = ":codedeploy:"
     title = message['status']
     pretext = ""
-    deployment_url = '<https://' + region + '.console.aws.amazon.com/codesuite/codedeploy/deployments/' + message['deploymentId'] + '?region=eu-west-1|' + message['deploymentId'] + '>'
-    
+    deployment_url = '<https://' + region + '.console.aws.amazon.com/codesuite/codedeploy/deployments/' + message['deploymentId'] + '?region=' + region + '|' + message['deploymentId'] + '>'
+
     text = "The deployment for app *%s* in group %s\n with id %s" % ( message['applicationName'], 
     message['deploymentGroupName'], deployment_url)
 
