@@ -75,6 +75,27 @@ Create an deployment group for a codedeploy app
     trigger_target_arn = "arn:aws:sns:eu-west-1:123456780:CodeDeploy"
   }
 ```
+## deployment-group-blue-green
+Creates a deployment group for a CodeDeploy app. This works in a blue/green way 
+
+### Available variables
+
+| Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| action\_on\_timeout | When to reroute traffic from an original environment to a replacement environment in a blue/green deployment | string | `"CONTINUE_DEPLOYMENT"` | no |
+| app\_name | Name of the app | string | n/a | yes |
+| autoscaling\_groups | Autoscaling groups you want to attach to the deployment group | list | n/a | yes |
+| environment | Environment where your codedeploy deployment group is used for | string | n/a | yes |
+| rollback\_enabled | Whether to enable auto rollback | string | `"false"` | no |
+| rollback\_events | The event types that trigger a rollback | list | `<list>` | no |
+| service\_role\_arn | IAM role that is used by the deployment group | string | n/a | yes |
+| terminate\_blue\_instances\_on\_deployment\_success | The action to take on instances in the original environment after a successful blue/green deployment | string | `"KEEP_ALIVE"` | no |
+| trigger\_events | events that can trigger the notifications | list | `<list>` | no |
+| trigger\_target\_arn | ARN of the target group | string | n/a | yes |
+
+## Outputs
+
+/
 
 ## deployment-group-ec2tag
 Create an deployment group for a codedeploy app. This module will filter for tags
