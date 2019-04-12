@@ -76,7 +76,7 @@ Create an deployment group for a codedeploy app
   }
 ```
 ## deployment-group-blue-green
-Creates a deployment group for a CodeDeploy app. This works in a blue/green way 
+Creates a deployment group for a CodeDeploy app. This works in a blue/green way
 
 ### Available variables
 
@@ -93,9 +93,21 @@ Creates a deployment group for a CodeDeploy app. This works in a blue/green way
 | trigger\_events | events that can trigger the notifications | list | `<list>` | no |
 | trigger\_target\_arn | ARN of the target group | string | n/a | yes |
 
-## Outputs
+### Outputs
 
 /
+
+### Example
+```
+  module "deployment_group-ec2tag" {
+    environment        = "environment"
+    app_name           = "codedeploy_app_app_name"
+    service_role_arn   = "codedeploy_role_arn"
+    autoscaling_groups = ["${var.blue_desired_capacity > 0 ? blue_asg_id : green_asg_id}"]
+    trigger_target_arn = "sns_lambda_topic"
+    rollback_enabled   = true
+  }
+```
 
 ## deployment-group-ec2tag
 Create an deployment group for a codedeploy app. This module will filter for tags
