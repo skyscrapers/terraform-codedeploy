@@ -55,4 +55,6 @@ resource "aws_iam_policy" "codedeploy_policy" {
   ]
 }
 EOF
+
 }
+

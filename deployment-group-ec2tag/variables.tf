@@ -17,7 +17,7 @@ variable "rollback_enabled" {
 
 variable "rollback_events" {
   description = "The event types that trigger a rollback"
-  type        = "list"
+  type        = list(string)
   default     = ["DEPLOYMENT_FAILURE"]
 }
 
@@ -28,3 +28,4 @@ variable "filterkey" {
 variable "filtervalue" {
   description = "filter value you want to use for filtering"
 }
+

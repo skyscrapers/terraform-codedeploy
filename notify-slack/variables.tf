@@ -12,12 +12,13 @@ variable "kms_key_arn" {
 
 variable "notify_users" {
   description = "Slack usernames for mentions as a space separated string as '<@name1> <@name2>' or '<!channel>' or '<!here>'"
-  type        = "string"
+  type        = string
   default     = ""
 }
 
 variable "verbose" {
   description = "All codedeploy messages will be output if true. Only CREATED, FAILED, STOPPED and SUCCEEDED if it is empty or false"
-  type        = "string"
+  type        = string
   default     = "true"
 }
+
