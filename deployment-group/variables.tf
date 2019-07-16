@@ -11,7 +11,7 @@ variable "service_role_arn" {
 }
 
 variable "autoscaling_groups" {
-  type        = "list"
+  type        = list(string)
   description = "Autoscaling groups you want to attach to the deployment group"
 }
 
@@ -22,6 +22,7 @@ variable "rollback_enabled" {
 
 variable "rollback_events" {
   description = "The event types that trigger a rollback"
-  type        = "list"
+  type        = list(string)
   default     = ["DEPLOYMENT_FAILURE"]
 }
+
