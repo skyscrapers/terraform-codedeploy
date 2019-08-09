@@ -51,20 +51,14 @@ data "archive_file" "slack_notification_zip" {
   source_dir = "${path.module}/functions/"
 }
 
-locals {
-  # Solution from this comment to open issue on non-relative paths  # https://github.com/hashicorp/terraform/issues/8204#issuecomment-332239294
-
-  filename = substr(data.archive_file.slack_notification_zip.output_path, length(path.cwd) + 1, -1, )
-  // +1 for removing the "/"
-}
 
 resource "aws_lambda_function" "cd_sns_lambda" {
   function_name = "cd_sns_lambda"
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = "lambda-slack.lambda_handler"
 
-  filename         = local.filename
-  source_code_hash = filebase64sha256(local.filename)
+  filename         = "${path.module}/lambda-slack.zip"
+  source_code_hash = filebase64sha256("${path.module}/lambda-slack.zip")
 
   runtime     = "python2.7"
   timeout     = "120"
