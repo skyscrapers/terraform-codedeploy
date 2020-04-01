@@ -46,3 +46,9 @@ variable "terminate_blue_instances_on_deployment_success" {
   default     = "KEEP_ALIVE"
 }
 
+variable "alb_target_group" {
+ description = "Name of the ALB target group, to be used with blue/green deployment group"
+ default     = null
+ type        = string
+}
+
