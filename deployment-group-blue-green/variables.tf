@@ -47,8 +47,8 @@ variable "terminate_blue_instances_on_deployment_success" {
 }
 
 variable "alb_target_group" {
- description = "Name of the ALB target group, to be used with blue/green deployment group"
- default     = null
- type        = string
+  description = "Name of the ALB target group, to be used with blue/green deployment group"
+  default     = null
+  type        = string
 }
 

@@ -12,9 +12,9 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
   dynamic "load_balancer_info" {
     for_each = var.alb_target_group == null ? [] : [var.alb_target_group]
     content {
-            target_group_info {
-               name = var.alb_target_group
-            }      
+      target_group_info {
+        name = var.alb_target_group
+      }
     }
   }
 
