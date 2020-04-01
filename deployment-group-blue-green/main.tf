@@ -9,6 +9,14 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
     enabled = var.rollback_enabled
     events  = var.rollback_events
   }
+  dynamic "load_balancer_info" {
+    for_each = var.alb_target_group == null ? [] : [var.alb_target_group]
+    content {
+      target_group_info {
+        name = var.alb_target_group
+      }
+    }
+  }
 
   blue_green_deployment_config {
     deployment_ready_option {

@@ -92,6 +92,7 @@ Creates a deployment group for a CodeDeploy app. This works in a blue/green way
 | terminate\_blue\_instances\_on\_deployment\_success | The action to take on instances in the original environment after a successful blue/green deployment | string | `"KEEP_ALIVE"` | no |
 | trigger\_events | events that can trigger the notifications | list | `<list>` | no |
 | trigger\_target\_arn | ARN of the target group | string | n/a | yes |
+| alb\_target\_group | Name of the ALB target group, to be used with blue/green deployment group | null | no
 
 ### Outputs
 
