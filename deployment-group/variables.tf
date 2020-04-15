@@ -26,3 +26,33 @@ variable "rollback_events" {
   default     = ["DEPLOYMENT_FAILURE"]
 }
 
+variable "trigger_events" {
+  description = "events that can trigger the notifications"
+  type        = list(string)
+  default     = ["DeploymentStop", "DeploymentRollback", "DeploymentSuccess", "DeploymentFailure", "DeploymentStart"]
+}
+
+variable "trigger_target_arn" {
+  description = "The ARN of the SNS topic through which notifications are sent"
+  type        = string
+  default     = null
+}
+
+variable "bluegreen_config" {
+  description = ""
+  type        = map(string)
+  default     = null
+
+}
+
+
+variable "alb_target_group" {
+  description = "Name of the ALB target group, to be used with blue/green deployment group"
+  default     = null
+  type        = string
+}
+
+variable "ec2_tag_filter" {
+  type    = map(string)
+  default = null
+}
