@@ -15,17 +15,17 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
   }
 
   dynamic "blue_green_deployment_config" {
-    for_each = var.bluegreen_config == null ? [] : [var.blue_green_deployment_config]
+    for_each = var.enable_bluegreen == true ? [1] : []
     content {
       deployment_ready_option {
-        action_on_timeout = blue_green_deployment_config.value["action_on_timeout"]
+        action_on_timeout = var.bluegreen_timeout_action
       }
 
       terminate_blue_instances_on_deployment_success {
-        action = blue_green_deployment_config.value["blue_termination_behavior"]
+        action = var.blue_termination_behavior
 
         green_fleet_provisioning_option {
-          action = blue_green_deployment_config.value["green_provioning"]
+          action = var.green_provisioning
         }
       }
     }
@@ -41,11 +41,11 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
   }
 
   dynamic "trigger_configuration" {
-    for_each = var.trigger_configuration == null ? [] : [var.trigger_configuration]
+    for_each = var.trigger_target_arn == null ? [] : [var.trigger_target_arn]
     content {
-      trigger_events     = trigger_configuration.value["events"]
+      trigger_events     = var.trigger_events
       trigger_name       = "${var.app_name}-${var.environment}"
-      trigger_target_arn = trigger_configuration.value["target_arn"]
+      trigger_target_arn = var.trigger_target_arn
     }
   }
 

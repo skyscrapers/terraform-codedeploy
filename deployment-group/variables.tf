@@ -38,21 +38,40 @@ variable "trigger_target_arn" {
   default     = null
 }
 
-variable "bluegreen_config" {
-  description = ""
-  type        = map(string)
-  default     = null
+variable "enable_bluegreen" {
+  description = "Enable all bluegreen deployment options"
+  type        = bool
+  default     = false
 
 }
 
+variable "bluegreen_timeout_action" {
+  description = "When to reroute traffic from an original environment to a replacement environment. Only relevant when `enable_bluegreen` is `true`"
+  type        = string
+  default     = "CONTINUE_DEPLOYMENT"
+}
+
+variable "blue_termination_behavior" {
+  description = " The action to take on instances in the original environment after a successful deployment. Only relevant when `enable_bluegreen` is `true`"
+  default     = "KEEP_ALIVE"
+}
+
+variable "green_provisioning" {
+  description = "The method used to add instances to a replacement environment. Only relevant when `enable_bluegreen` is `true`"
+  type        = string
+  default     = "COPY_AUTO_SCALING_GROUP"
+
+
+}
 
 variable "alb_target_group" {
-  description = "Name of the ALB target group, to be used with blue/green deployment group"
+  description = "Name of the ALB target group to use, define it when traffic need to be blocked from ALB during deployment"
   default     = null
   type        = string
 }
 
 variable "ec2_tag_filter" {
-  type    = map(string)
-  default = null
+  description = "Filter key and value you want to use for tags filters. Defined as key/value format, example: `{\"Environment\":\"staging\"}`"
+  type        = map(string)
+  default     = null
 }
