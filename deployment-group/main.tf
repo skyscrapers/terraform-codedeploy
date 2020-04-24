@@ -11,7 +11,7 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
 
   deployment_style {
     deployment_option = var.alb_target_group == null ? "WITHOUT_TRAFFIC_CONTROL" : "WITH_TRAFFIC_CONTROL"
-    deployment_type   = var.bluegreen_config == null ? "IN_PLACE" : "BLUE_GREEN"
+    deployment_type   = var.enable_bluegreen == false ? "IN_PLACE" : "BLUE_GREEN"
   }
 
   dynamic "blue_green_deployment_config" {
@@ -23,10 +23,9 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
 
       terminate_blue_instances_on_deployment_success {
         action = var.blue_termination_behavior
-
-        green_fleet_provisioning_option {
-          action = var.green_provisioning
-        }
+      }
+      green_fleet_provisioning_option {
+        action = var.green_provisioning
       }
     }
   }
