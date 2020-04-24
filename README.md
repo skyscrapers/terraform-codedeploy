@@ -1,22 +1,38 @@
-# terraform-codedeploy
 Terraform modules that are related to codedeploy
 
-
-## app
+# app
 Create a codedeploy app
 
-### Available variables
- * [`name`]: String(required): Name of your codedeploy application
- * [`project`]: String(required): The current project
- * [`s3_bucket_arn`]: String(optional): ARN of the S3 bucket where to fetch the application revision packages
+## Requirements
 
-### Output
-* [`app_name`]: String: Name of the codedeploy app
-* [`deployer_policy_id`]: String: IAM policy id for the user / role that will upload application revisions and trigger deployments
-* [`deployer_policy_arn`]: String: IAM policy ARN for the user / role that will upload application revisions and trigger deployments
-* [`deployer_policy_name`]: String: IAM policy name for the user / role that will upload application revisions and trigger deployments
+| Name | Version |
+|------|---------|
+| terraform | >= 0.12 |
 
-### Example
+## Providers
+
+| Name | Version |
+|------|---------|
+| aws | n/a |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| name | Name of your codedeploy application | `any` | n/a | yes |
+| project | The current project | `any` | n/a | yes |
+| s3_bucket_arn | ARN of the S3 bucket where to fetch the application revision packages | `string` | `""` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| app_name | n/a |
+| deployer_policy_arn | n/a |
+| deployer_policy_id | n/a |
+| deployer_policy_name | n/a |
+
+## Example
 ```
   module "codedeploy" {
     source  = "github.com/skyscrapers/terraform-codedeploy//app"
@@ -25,187 +41,132 @@ Create a codedeploy app
   }
 ```
 
-## deployment-group
+# deployment-group
 Create an deployment group for a codedeploy app
 
-### Available variables
- * [`environment`]: String(required): Environment where your codedeploy deployment group is used for
- * [`app_name`]: String(required): Name of the coddeploy app
- * [`service_role_arn`]: String(required): IAM role that is used by the deployment group. You can use the [terraform-iam](https://github.com/skyscrapers/terraform-iam/blob/master/README.md#codedeploy_role) module for this.
- * [`autoscaling_groups`]: List(string)(required): Autoscaling groups you want to attach to the deployment group
- * [`rollback_enbled`]: Bool(optional, default: `false`): Whether to enable auto rollback
- * [`rollback_events`]: List(string)(optional, default: `["DEPLOYMENT_FAILURE"]`): The event types that trigger a rollback
+## Requirements
 
-### Output
-/
+| Name | Version |
+|------|---------|
+| terraform | >= 0.12 |
 
-### Example
-```
-  module "deployment_group" {
-    source             = "github.com/skyscrapers/terraform-codedeploy//deployment-group"
-    environment        = "production"
-    app_name           = module.codedeploy.app_name
-    service_role_arn   = module.iam.arn_role
-    autoscaling_groups = ["autoscaling1", "autoscaling2"]
-  }
-```
-## deployment-group-notify
-Create an deployment group for a codedeploy app
+## Providers
 
-### Available variables
- * [`environment`]: String(required): Environment where your codedeploy deployment group is used for
- * [`app_name`]: String(required): Name of the coddeploy app
- * [`service_role_arn`]: String(required): IAM role that is used by the deployment group. You can use the [terraform-iam](https://github.com/skyscrapers/terraform-iam/blob/master/README.md#codedeploy_role) module for this.
- * [`autoscaling_groups`]: List(string)(required): Autoscaling groups you want to attach to the deployment group
- * [`rollback_enbled`]: Bool(optional, default: `false`): Whether to enable auto rollback
- * [`rollback_events`]: List(string)(optional, default: `["DEPLOYMENT_FAILURE"]`): The event types that trigger a rollback
- * [`trigger_target_arn`]: String(required): SNS topic through which notifications are sent.
+| Name | Version |
+|------|---------|
+| aws | n/a |
 
-### Output
-/
-
-### Example
-```
-  module "deployment_group" {
-    source             = "github.com/skyscrapers/terraform-codedeploy//deployment-group"
-    environment        = "production"
-    app_name           = module.codedeploy.app_name
-    service_role_arn   = module.iam.arn_role
-    autoscaling_groups = ["autoscaling1", "autoscaling2"]
-    trigger_target_arn = "arn:aws:sns:eu-west-1:123456780:CodeDeploy"
-  }
-```
-## deployment-group-blue-green
-Creates a deployment group for a CodeDeploy app. This works in a blue/green way
-
-### Available variables
+## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| action\_on\_timeout | When to reroute traffic from an original environment to a replacement environment in a blue/green deployment | string | `"CONTINUE_DEPLOYMENT"` | no |
-| app\_name | Name of the app | string | n/a | yes |
-| autoscaling\_groups | Autoscaling groups you want to attach to the deployment group | list | n/a | yes |
-| environment | Environment where your codedeploy deployment group is used for | string | n/a | yes |
-| rollback\_enabled | Whether to enable auto rollback | string | `"false"` | no |
-| rollback\_events | The event types that trigger a rollback | list | `<list>` | no |
-| service\_role\_arn | IAM role that is used by the deployment group | string | n/a | yes |
-| terminate\_blue\_instances\_on\_deployment\_success | The action to take on instances in the original environment after a successful blue/green deployment | string | `"KEEP_ALIVE"` | no |
-| trigger\_events | events that can trigger the notifications | list | `<list>` | no |
-| trigger\_target\_arn | ARN of the target group | string | n/a | yes |
-| alb\_target\_group | Name of the ALB target group, to be used with blue/green deployment group | null | no
+|------|-------------|------|---------|:--------:|
+| app_name | Name of the app | `any` | n/a | yes |
+| autoscaling_groups | Autoscaling groups you want to attach to the deployment group | `list(string)` | n/a | yes |
+| environment | Environment where your codedeploy deployment group is used for | `any` | n/a | yes |
+| service_role_arn | IAM role that is used by the deployment group | `any` | n/a | yes |
+| alb_target_group | Name of the ALB target group to use, define it when traffic need to be blocked from ALB during deployment | `string` | `null` | no |
+| blue_termination_behavior | The action to take on instances in the original environment after a successful deployment. Only relevant when `enable_bluegreen` is `true` | `string` | `"KEEP_ALIVE"` | no |
+| bluegreen_timeout_action | When to reroute traffic from an original environment to a replacement environment. Only relevant when `enable_bluegreen` is `true` | `string` | `"CONTINUE_DEPLOYMENT"` | no |
+| ec2_tag_filter | Filter key and value you want to use for tags filters. Defined as key/value format, example: `{"Environment":"staging"}` | `map(string)` | `null` | no |
+| enable_bluegreen | Enable all bluegreen deployment options | `bool` | `false` | no |
+| green_provisioning | The method used to add instances to a replacement environment. Only relevant when `enable_bluegreen` is `true` | `string` | `"COPY_AUTO_SCALING_GROUP"` | no |
+| rollback_enabled | Whether to enable auto rollback | `bool` | `false` | no |
+| rollback_events | The event types that trigger a rollback | `list(string)` | <pre>[<br>  "DEPLOYMENT_FAILURE"<br>]</pre> | no |
+| trigger_events | events that can trigger the notifications | `list(string)` | <pre>[<br>  "DeploymentStop",<br>  "DeploymentRollback",<br>  "DeploymentSuccess",<br>  "DeploymentFailure",<br>  "DeploymentStart"<br>]</pre> | no |
+| trigger_target_arn | The ARN of the SNS topic through which notifications are sent | `string` | `null` | no |
 
-### Outputs
+## Outputs
 
-/
+No output.
 
-### Example
+
+## Example
 ```
-  module "deployment_group-ec2tag" {
-    environment        = "environment"
-    app_name           = "codedeploy_app_app_name"
-    service_role_arn   = "codedeploy_role_arn"
-    autoscaling_groups = [var.blue_desired_capacity > 0 ? blue_asg_id : green_asg_id]
-    trigger_target_arn = "sns_lambda_topic"
-    rollback_enabled   = true
-  }
-```
-
-## deployment-group-ec2tag
-Create an deployment group for a codedeploy app. This module will filter for tags
-
-### Available variables
- * [`environment`]: String(required): Environment where your codedeploy deployment group is used for
- * [`app_name`]: String(required): Name of the coddeploy app
- * [`service_role_arn`]: String(required): IAM role that is used by the deployment group. You can use the [terraform-iam](https://github.com/skyscrapers/terraform-iam/blob/master/README.md#codedeploy_role) module for this.
- * [`rollback_enbled`]: Bool(optional, default: `false`): Whether to enable auto rollback
- * [`rollback_events`]: List(string)(optional, default: `["DEPLOYMENT_FAILURE"]`): The event types that trigger a rollback
- * [`filterkey`]: String(required):  The key of the tag you assigned to the instances belonging to this deployment group
- * [`filtervalue`]: String(required): The value of the tag you assigned to the instances belonging to this deployment group
-
-
-### Output
-/
-
-### Example
-```
-  module "deployment_group-ec2tag" {
-    source             = "github.com/skyscrapers/terraform-codedeploy//deployment-group-ec2tag"
+  module "deployment_group" {
+    source             = "github.com/skyscrapers/terraform-codedeploy//deployment-group"
     environment        = "production"
     app_name           = module.codedeploy.app_name
     service_role_arn   = module.iam.arn_role
-    filterkey          = "app"
-    filtervalue        = "web"
+    autoscaling_groups = ["autoscaling1", "autoscaling2"]
   }
 ```
 
-## deployment-group-ec2tag-notify
-Create an deployment group for a codedeploy app and will set the notifications. This module will filter for tags
 
-### Available variables
- * [`environment`]: String(required): Environment where your codedeploy deployment group is used for
- * [`app_name`]: String(required): Name of the coddeploy app
- * [`service_role_arn`]: String(required): IAM role that is used by the deployment group. You can use the [terraform-iam](https://github.com/skyscrapers/terraform-iam/blob/master/README.md#codedeploy_role) module for this.
- * [`rollback_enbled`]: Bool(optional, default: `false`): Whether to enable auto rollback
- * [`rollback_events`]: List(string)(optional, default: `["DEPLOYMENT_FAILURE"]`): The event types that trigger a rollback
- * [`filterkey`]: String(required):  The key of the tag you assigned to the instances belonging to this deployment group
- * [`filtervalue`]: String(required): The value of the tag you assigned to the instances belonging to this deployment group
- * [`trigger_arn`]: String(required): SNS topic through which notifications are sent.
- * [`trigger_name`]: String(required): the name of the notification trigger.
- * [`trigger_events`]: String(optional): events that can trigger the notifications.
-
-### Output
-/
-
-### Example
-```
-  module "deployment_group-ec2tag-notify" {
-    source             = "github.com/skyscrapers/terraform-codedeploy//deployment-group-ec2tag-triggered"
-    environment        = "production"
-    app_name           = module.codedeploy.app_name
-    service_role_arn   = module.iam.arn_role
-    filterkey          = "app"
-    filtervalue        = "web"
-    trigger_name     = "SNSToSlack"
-    trigger_arn      = "arn:aws:sns:eu-west-1:123456780:CodeDeploy"
-  }
-```
-
-## S3 bucket
+# S3 bucket
 
 Create an S3 bucket to use with Codedeploy, to store application revisions.
+## Requirements
 
-See [s3bucket/variables.tf](s3bucket/variables.tf) for available variables.
+| Name | Version |
+|------|---------|
+| terraform | >= 0.12 |
 
-### Outputs
+## Providers
 
-* [`bucket_id`]: String: S3 bucket id
-* [`bucket_arn`]: String: S3 bucket ARN
-* [`policy_id`]: String: IAM policy id for the EC2 instances working with Codedeploy
-* [`policy_arn`]: String: IAM policy ARN for the EC2 instances working with Codedeploy
-* [`policy_name`]: String: IAM policy name for the EC2 instances working with Codedeploy
+| Name | Version |
+|------|---------|
+| aws | n/a |
 
-### Example
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| name_prefix | Prefix for the bucket name. Note that the same bucket is used for all codedeploy deployment groups | `any` | n/a | yes |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| bucket_arn | n/a |
+| bucket_id | n/a |
+| policy_arn | n/a |
+| policy_id | n/a |
+| policy_name | n/a |
+
+## Example
 
 ```
 module "codedeploy_bucket" {
   source      = "github.com/skyscrapers/terraform-codedeploy//s3bucket?ref=478373f6f8d4a46b7a1ec96090707365e0ae3e42"
-  name_prefix = "halito"
+  name_prefix = "app"
 }
 ```
 
-## notify-slack
+# notify-slack
 Creates a lambda function that notifies Slack via the [incoming webhooks](https://skyscrapers.slack.com/apps/A0F7XDUAZ-incoming-webhooks) when a deployment event happens using an SNS topic to call the lambda function.
 
-### Available variables
-* [`slack_webhook_url`]: String: the encrypted url to send our notifications to
-* [`slack_channel`]: String: The channel where we want to publish the notification
-* [`kms_key_arn`]: String:  kms key used to encrypt the webhook
 
-### Output
-* [`sns_topic`]: String: The SNS topic to configure for the codedeploy deployment groups
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | >= 0.12 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| archive | n/a |
+| aws | n/a |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| kms_key_arn | KMS used for encrypting the webhook | `any` | n/a | yes |
+| slack_channel | E.g. #channel_name | `any` | n/a | yes |
+| slack_webhook_url | Needs to be encrypted from a file with _no_ encryption context, using: aws kms encrypt --key-id 'arn:' --plaintext 'fileb://webhook' --output text --query CiphertextBlob | `any` | n/a | yes |
+| notify_users | Slack usernames for mentions as a space separated string as '<@name1> <@name2>' or '<!channel>' or '<!here>' | `string` | `""` | no |
+| verbose | All codedeploy messages will be output if true. Only CREATED, FAILED, STOPPED and SUCCEEDED if it is empty or false | `string` | `"true"` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| sns_topic | n/a |
 
 
-### Example
+## Example
 ```
   module "slack-notification" {
     source  = "github.com/skyscrapers/terraform-codedeploy//notify-slack"
@@ -214,3 +175,4 @@ Creates a lambda function that notifies Slack via the [incoming webhooks](https:
     kms_key_arn = aws_kms_key.kms_key.arn
   }
 ```
+
