@@ -49,7 +49,7 @@ resource "aws_codedeploy_deployment_group" "deployment_group" {
   }
 
   dynamic "ec2_tag_filter" {
-    for_each = var.ec2_tag_filter == null ? [] : [var.ec2_tag_filter]
+    for_each = var.ec2_tag_filter == null ? {} : var.ec2_tag_filter
     content {
       key   = ec2_tag_filter.key
       type  = "KEY_AND_VALUE"
