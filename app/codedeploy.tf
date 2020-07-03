@@ -57,6 +57,7 @@ resource "aws_iam_policy" "deployer_policy" {
       ]
     }
     ${element(formatlist(", { \"Effect\" : \"Allow\", \"Action\" : [ \"s3:PutObject*\", \"s3:ListBucket\" ], \"Resource\" : [ \"%s/*\", \"%s\" ] }, { \"Effect\" : \"Allow\", \"Action\" : [ \"s3:ListAllMyBuckets\" ], \"Resource\" : [ \"*\" ] }", compact(list(var.s3_bucket_arn)), compact(list(var.s3_bucket_arn))), 0)}
+   ]
 }
 EOF
 
