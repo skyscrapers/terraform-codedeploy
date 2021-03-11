@@ -57,8 +57,8 @@ resource "aws_lambda_function" "cd_sns_lambda" {
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = "lambda-slack.lambda_handler"
 
-  filename         = "${path.module}/lambda-slack.zip"
-  source_code_hash = filebase64sha256("${path.module}/lambda-slack.zip")
+  filename         = data.archive_file.slack_notification_zip.output_path
+  source_code_hash = data.archive_file.slack_notification_zip.output_base64sha256
 
   runtime     = "python2.7"
   timeout     = "120"
